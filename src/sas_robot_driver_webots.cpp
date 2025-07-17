@@ -55,6 +55,7 @@ void RobotDriverWebots::initialize()
         q_ = wbi_->get_joint_positions(configuration_.robot_joint_position_sensor_names);
         q_target_ = q_;
         status_msg_ = "initialized!";
+        RCLCPP_INFO_STREAM_ONCE(node_->get_logger(), "::RobotDriverWebots initializing...");
 
         // Start thread
         finish_motion_ = false;
@@ -92,14 +93,14 @@ void RobotDriverWebots::disconnect()
  */
 void RobotDriverWebots::_control_mode()
 {
-    RCLCPP_INFO_STREAM_ONCE(node_->get_logger(), "::RobotDriverWebots control loop running!");
-    while(!finish_motion_ && !st_break_loops_)
+    while(!finish_motion_ && !(*st_break_loops_))
     {
+        RCLCPP_INFO_STREAM_ONCE(node_->get_logger(), "::RobotDriverWebots control loop running!");
         q_ = wbi_->get_joint_positions(configuration_.robot_joint_position_sensor_names);
         wbi_->set_joint_target_positions(configuration_.robot_joint_names, q_target_);
         wbi_->trigger_next_simulation_step();
     }
-    RCLCPP_INFO_STREAM_ONCE(node_->get_logger(), "::RobotDriverWebots finish connect().");
+    RCLCPP_INFO_STREAM_ONCE(node_->get_logger(), "::RobotDriverWebots control loop break.");
 }
 
 

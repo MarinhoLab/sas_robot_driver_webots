@@ -49,7 +49,7 @@ int main(int argc, char** argv)
         //sas::get_ros_optional_parameter(node, "timeout", configuration.timeout, 1000);
         RCLCPP_INFO_STREAM_ONCE(node->get_logger(), "::Parameters OK.");
 
-        RCLCPP_INFO_STREAM_ONCE(node->get_logger(), "::Instantiating RobotDriverWebotsMyRobot.");
+        RCLCPP_INFO_STREAM_ONCE(node->get_logger(), "::Instantiating RobotDriverWebots with DEF: \""+configuration.robot_definition+"\"");
         auto robot_driver_webots= std::make_shared<sas::RobotDriverWebots>(node, configuration, &kill_this_process);
 
         sas::RobotDriverROSConfiguration robot_driver_ros_configuration;

@@ -66,10 +66,12 @@ public:
     std::tuple<VectorXd, VectorXd> get_joint_limits() override;
 
     void connect() override;
-    void disconnect() override;
-
     void initialize() override;
     void deinitialize() override;
+    void disconnect() override;
+
+
+
 
 };
 
