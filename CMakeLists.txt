@@ -13,6 +13,8 @@ find_package(sas_core REQUIRED)
 find_package(sas_common REQUIRED)
 find_package(sas_robot_driver REQUIRED)
 
+
+
 ####################################
 # CPP Shared Library Block [BEGIN] #
 # vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv #
@@ -49,6 +51,7 @@ ament_export_dependencies(
 target_link_libraries(${PROJECT_NAME} PUBLIC
     dqrobotics
     dqrobotics-interface-webots
+    /usr/local/webots/lib/controller/libCppController.so
 )
 
 install(
@@ -127,11 +130,11 @@ install(DIRECTORY
 # Scripts Block [BEGIN] #
 # vvvvvvvvvvvvvvvvvvvvv #
 # https://ros2-tutorial.readthedocs.io/en/latest/
-install(DIRECTORY
-  scripts/
-  FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
-  DESTINATION lib/${PROJECT_NAME}
-)
+#install(DIRECTORY
+#  scripts/
+#  FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+#  DESTINATION lib/${PROJECT_NAME}
+#)
 # ^^^^^^^^^^^^^^^^^^^ #
 # Scripts Block [END] #
 #######################
