@@ -35,18 +35,17 @@ def generate_launch_description():
                     default_value='30'
                 ),
         Node(
-            package='sas_robot_driver_unitree_z1',
-            executable='sas_robot_driver_unitree_z1_node',
+            package='sas_robot_driver_webots',
+            executable='sas_robot_driver_webots_node',
             name='ur3',
             namespace="sas",
             parameters=[{
-                "robot_name": "ur3_1",
-                "thread_sampling_time_sec": 0.002,    
+                "thread_sampling_time_sec": 0.001,    
                 "robot_definition": "ur3",
                 "robot_joint_names": robot_joint_names,
                 "sampling_period": 32, 
-                "reset_simulation" True,
-                "robot_joint_position_sensor_names": robot_joint_position_sensor_names
+                "reset_simulation": True,
+                "robot_joint_position_sensor_names": robot_joint_position_sensor_names,
                 "joint_limits_min": [-360.0, -360.0, -360.0, -360.0, -360.0, -720.0],  # The last joint has no limit
                 "joint_limits_max": [360.0, 360.0, 360.0, 360.0, 360.0, 720.0],  # The last joint has no limit
             }]

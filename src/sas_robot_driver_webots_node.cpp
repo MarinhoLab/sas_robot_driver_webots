@@ -9,7 +9,7 @@
  * SIGNAL HANDLER
  * *******************************************/
 #include<signal.h>
-static std::atomic_bool kill_this_process(false);
+static std::atomic_bool kill_this_process{false};
 void sig_int_handler(int)
 {
     kill_this_process = true;
@@ -50,16 +50,15 @@ int main(int argc, char** argv)
         RCLCPP_INFO_STREAM_ONCE(node->get_logger(), "::Parameters OK.");
 
         RCLCPP_INFO_STREAM_ONCE(node->get_logger(), "::Instantiating RobotDriverWebotsMyRobot.");
-        auto robot_driver_coppeliasim = std::make_shared<sas::RobotDriverWebots>(configuration,
-                                                                                      &kill_this_process);
+        auto robot_driver_webots= std::make_shared<sas::RobotDriverWebots>(node, configuration, &kill_this_process);
 
         sas::RobotDriverROSConfiguration robot_driver_ros_configuration;
-        sas::get_ros_parameter(node,"thread_sampling_time_sec",robot_driver_ros_configuration.thread_sampling_time_sec);
+        sas::get_ros_parameter(node,"thread_sampling_time_sec", robot_driver_ros_configuration.thread_sampling_time_sec);
         robot_driver_ros_configuration.robot_driver_provider_prefix = node->get_name();
 
         RCLCPP_INFO_STREAM_ONCE(node->get_logger(), "::Instantiating RobotDriverROS.");
         sas::RobotDriverROS robot_driver_ros(node,
-                                             robot_driver_coppeliasim,
+                                             robot_driver_webots,
                                              robot_driver_ros_configuration,
                                              &kill_this_process);
         robot_driver_ros.control_loop();
@@ -70,5 +69,7 @@ int main(int argc, char** argv)
         RCLCPP_ERROR_STREAM_ONCE(node->get_logger(), std::string("::Exception::") + e.what());
     }
 
+
+    //sas::display_signal_handler_none_bug_info(node);
     return 0;
 }

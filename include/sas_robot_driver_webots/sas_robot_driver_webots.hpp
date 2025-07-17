@@ -4,6 +4,7 @@
 #include <sas_core/sas_robot_driver.hpp>
 #include <dqrobotics/interfaces/webots/DQ_WebotsInterface.h>
 #include <thread>
+#include <rclcpp/rclcpp.hpp>
 
 using namespace Eigen;
 
@@ -40,21 +41,23 @@ private:
     VectorXd q_;
     VectorXd q_target_;
     std::string status_msg_;
+    std::shared_ptr<rclcpp::Node> node_;
 protected:
     std::atomic_bool* st_break_loops_;
 
     void _control_mode();
     std::thread control_mode_thread_;
-    void _start_control_mode_thread();
     std::atomic<bool> finish_motion_;
 
 public:
     // Prevent copies as usually drivers have threads
     RobotDriverWebots(const RobotDriverWebots&)=delete;
     RobotDriverWebots()=delete;
-    virtual ~RobotDriverWebots() = default;
+    ~RobotDriverWebots();
 
-    RobotDriverWebots(const RobotDriverWebotsConfiguration &configuration, std::atomic_bool* break_loops);
+    RobotDriverWebots(const std::shared_ptr<rclcpp::Node>& node,
+                      const RobotDriverWebotsConfiguration &configuration,
+                      std::atomic_bool* break_loops);
 
     /// Everything below this line is an override
     /// the concrete implementations are needed
