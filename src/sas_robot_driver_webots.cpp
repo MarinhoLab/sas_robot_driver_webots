@@ -25,14 +25,6 @@ void RobotDriverWebots::set_target_joint_positions(const VectorXd &desired_joint
     q_target_ = desired_joint_positions_rad;
 }
 
-std::tuple<VectorXd, VectorXd> RobotDriverWebots::get_joint_limits()
-{
-    //TODO: Obtain the joint limits from the simulator. This does not seem to be trivial as of now.
-    int dof = get_joint_positions().size();
-    auto joint_positions_max = VectorXd::Ones(dof)*2*pi;
-    auto joint_positions_min = -joint_positions_max;
-    return {joint_positions_min, joint_positions_max};
-}
 
 void RobotDriverWebots::connect()
 {

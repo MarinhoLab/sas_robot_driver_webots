@@ -63,7 +63,6 @@ public:
     /// the concrete implementations are needed
     VectorXd get_joint_positions() override;
     void set_target_joint_positions(const VectorXd& desired_joint_positions_rad) override;
-    std::tuple<VectorXd, VectorXd> get_joint_limits() override;
 
     void connect() override;
     void initialize() override;
