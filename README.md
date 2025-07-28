@@ -22,10 +22,17 @@ Prerequisites
 
 ### Update LD_LIBRARY_PATH to include /usr/local/webots/lib/controller/
 
+> [!WARNING]
+> Run this only once.
+
 ```shell
 echo "# Update the environment variable LD_LIBRARY_PATH to include /usr/local/webots/lib/controller/, as instructed in https://ros2-tutorial.readthedocs.io" >> ~/.bashrc
 echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/webots/lib/controller/" >> ~/.bashrc
 ```
+
+> [!NOTE]
+> If you installed cpp-interface-webots in a custom folder, you may need to update the ENV variables too. Check this [tutorial.](https://ros2-tutorial.readthedocs.io/en/latest/cmake/cmake_packages_without_sudo.html)
+
 
 ### Build this ROS Package. 
 For instance, if you build your ROS packages in `~/ros2_ws/`:
