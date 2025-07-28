@@ -1,0 +1,24 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/universal_robots/protos/UR3e.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.25987770095018603 0.13542794706246275 0.9560977207918092 2.217120836916364
+  position 0.9564184016973182 -1.5498415215052683 1.1415013819378705
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 2 2
+}
+DEF ur3 UR3e {
+  controller "<extern>"
+  supervisor TRUE
+}
