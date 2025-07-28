@@ -8,14 +8,14 @@ namespace sas
 RobotDriverWebots::RobotDriverWebots(
     const RobotDriverWebotsConfiguration &configuration,
     std::atomic_bool *break_loops)
-    :RobotDriver{break_loops}, current_status_{STATUS::IDLE}, configuration_{configuration},
+    :RobotDriver{break_loops}, configuration_{configuration},
     st_break_loops_{break_loops}, finish_motion_{false}
 {
     _make_webots_pointer(configuration.sampling_period);
 }
 
 RobotDriverWebots::RobotDriverWebots(std::atomic_bool *break_loops)
-:RobotDriver{break_loops},  current_status_{STATUS::IDLE}, st_break_loops_{break_loops}, finish_motion_{false}
+:RobotDriver{break_loops}, st_break_loops_{break_loops}, finish_motion_{false}
 {
     _make_webots_pointer(32);
 }
@@ -23,6 +23,15 @@ RobotDriverWebots::RobotDriverWebots(std::atomic_bool *break_loops)
 void RobotDriverWebots::set_parameters(const RobotDriverWebotsConfiguration &configuration)
 {
     configuration_ = configuration;
+}
+
+/**
+ * @brief RobotDriverWebots::get_status
+ * @return
+ */
+std::string RobotDriverWebots::get_status() const
+{
+    return status_msg_;
 }
 
 /**
@@ -49,14 +58,10 @@ void RobotDriverWebots::set_target_joint_positions(const VectorXd &desired_joint
  */
 void RobotDriverWebots::connect()
 {
-    if (current_status_ == STATUS::IDLE)
-    {
-        if(!wbi_->connect(configuration_.robot_definition))
+  if(!wbi_->connect(configuration_.robot_definition))
             throw std::runtime_error("::Unable to connect to Webots.");
         wbi_->set_sampling_period(configuration_.sampling_period);
-        current_status_ = STATUS::CONNECTED;
         status_msg_ = "connected!";
-    }
 }
 
 
@@ -65,22 +70,20 @@ void RobotDriverWebots::connect()
  */
 void RobotDriverWebots::initialize()
 {
-    if (current_status_ == STATUS::CONNECTED)
+    for (auto i =0; i<INITIAL_SAMPLES_; i++)
     {
-        for (auto i =0; i<INITIAL_SAMPLES_; i++)
-        {
-            q_ = wbi_->get_joint_positions(configuration_.robot_joint_position_sensor_names);
-            wbi_->trigger_next_simulation_step();
-        }
-        q_target_ = q_;
-        status_msg_ = "initialized!";
-
-        // Start thread
-        finish_motion_ = false;
-        if (control_mode_thread_.joinable())
-            control_mode_thread_.join();
-        control_mode_thread_ = std::thread(&RobotDriverWebots::_control_mode, this);
+        q_ = wbi_->get_joint_positions(configuration_.robot_joint_position_sensor_names);
+        wbi_->trigger_next_simulation_step();
     }
+    q_target_ = q_;
+    status_msg_ = "initialized!";
+
+    // Start thread
+    finish_motion_ = false;
+    if (control_mode_thread_.joinable())
+        control_mode_thread_.join();
+    control_mode_thread_ = std::thread(&RobotDriverWebots::_control_mode, this);
+
 }
 
 
@@ -93,7 +96,6 @@ void RobotDriverWebots::deinitialize()
     finish_motion_ = true;
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     status_msg_ = "Deinitialized.";
-    current_status_ = STATUS::DEINITIALIZED;
 
     if (configuration_.reset_simulation)
         wbi_->reset_simulation();
@@ -108,7 +110,6 @@ void RobotDriverWebots::disconnect()
     if (control_mode_thread_.joinable())
         control_mode_thread_.join();
     status_msg_ = "Disconnected.";
-    current_status_ = STATUS::DISCONNECTED;
 }
 
 
