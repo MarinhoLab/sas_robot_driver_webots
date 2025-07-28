@@ -41,7 +41,9 @@ private:
     VectorXd q_;
     VectorXd q_target_;
     std::string status_msg_;
-    std::shared_ptr<rclcpp::Node> node_;
+    int INITIAL_SAMPLES_{5};
+
+    void _make_webots_pointer(const int& sampling_period=32);
 protected:
     std::atomic_bool* st_break_loops_;
 
@@ -53,11 +55,13 @@ public:
     // Prevent copies as usually drivers have threads
     RobotDriverWebots(const RobotDriverWebots&)=delete;
     RobotDriverWebots()=delete;
-    ~RobotDriverWebots();
+    ~RobotDriverWebots() = default;
 
-    RobotDriverWebots(const std::shared_ptr<rclcpp::Node>& node,
-                      const RobotDriverWebotsConfiguration &configuration,
+    RobotDriverWebots(const RobotDriverWebotsConfiguration &configuration,
                       std::atomic_bool* break_loops);
+
+    RobotDriverWebots(std::atomic_bool* break_loops);
+    void set_parameters(const RobotDriverWebotsConfiguration &configuration);
 
     /// Everything below this line is an override
     /// the concrete implementations are needed
