@@ -4,6 +4,12 @@
 
 A SAS driver based on [cpp-interface-webots](https://github.com/juanjqo/cpp-interface-webots) and [DQ Robotics](https://github.com/dqrobotics/cpp) to integrate Webots in ROS2 Jazzy.
 
+> [!WARNING]
+> <img src=https://github.com/juanjqo/capybara_toolkit/assets/23158313/2e0dbd2d-9b12-4930-9ffe-511d8270de03 width='250'>
+>
+> This project is under active development. Do not use for production or important demos.
+
+
 
 
 
