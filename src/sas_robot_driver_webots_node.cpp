@@ -60,7 +60,7 @@ int main(int argc, char** argv)
         //RCLCPP_INFO_STREAM_ONCE(node->get_logger(), "::Instantiating RobotDriverWebots with DEF: \""+configuration.robot_definition+"\"");
         //auto robot_driver_webots= std::make_shared<sas::RobotDriverWebots>(configuration, &kill_this_process);
 
-        RCLCPP_INFO_STREAM_ONCE(node->get_logger(), "::Instantiating RobotDriverWebots with DEF: \""+configuration.robot_definition+"\"");
+        RCLCPP_INFO_STREAM_ONCE(node->get_logger(), "::Setting RobotDriverWebots parameters with DEF: \""+configuration.robot_definition+"\"");
         robot_driver_webots->set_parameters(configuration);
 
         sas::RobotDriverROSConfiguration robot_driver_ros_configuration;
