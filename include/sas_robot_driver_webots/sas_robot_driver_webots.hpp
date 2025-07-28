@@ -25,15 +25,6 @@ struct RobotDriverWebotsConfiguration
 
 class RobotDriverWebots: public RobotDriver
 {
-private:
-    enum class STATUS{
-        IDLE,
-        CONNECTED,
-        INITIALIZED,
-        DEINITIALIZED,
-        DISCONNECTED,
-    };
-    STATUS current_status_;
 
 private:
     RobotDriverWebotsConfiguration configuration_;
@@ -62,6 +53,7 @@ public:
 
     RobotDriverWebots(std::atomic_bool* break_loops);
     void set_parameters(const RobotDriverWebotsConfiguration &configuration);
+    std::string get_status() const;
 
     /// Everything below this line is an override
     /// the concrete implementations are needed
